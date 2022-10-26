@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:c="clr-namespace:odeba.Controls"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Class="odeba.AppFrame">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <xct:BoolToObjectConverter
+                x:Key="FullscreenToRowspan2"
+                FalseObject="1"
+                TrueObject="2" />
+            <xct:BoolToObjectConverter
+                x:Key="FullscreenToRow"
+                FalseObject="1"
+                TrueObject="0" />
+            <xct:InvertedBoolConverter x:Key="HideScrollviewIfFullScreen" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <ContentView.Content>
+        <AbsoluteLayout>
+            <Grid
+                xct:SafeAreaEffect.SafeArea="True"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="SizeProportional"
+                RowDefinitions="{OnPlatform Android='70,*',
+                                            Default='60, *'}">
+                <ContentView
+                    Grid.Row="{Binding FullScreen, Source={x:Reference appFrame}, Converter={StaticResource FullscreenToRow}}"
+                    Grid.RowSpan="{Binding FullScreen, Source={x:Reference appFrame}, Converter={StaticResource FullscreenToRowspan2}}"
+                    Content="{Binding DisplayContent, Source={x:Reference appFrame}}" />
+                <StackLayout
+                    Margin="8,0,8,4"
+                    HorizontalOptions="FillAndExpand"
+                    Orientation="Horizontal"
+                    VerticalOptions="CenterAndExpand">
+                    <ContentView HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+                        <ImageButton
+                            xct:IconTintColorEffect.TintColor="Black"
+                            Aspect="AspectFit"
+                            BackgroundColor="Transparent"
+                            Command="{Binding LeftButtonCommand, Source={x:Reference appFrame}}"
+                            HeightRequest="24"
+                            HorizontalOptions="Start"
+                            IsVisible="{Binding DisplayNavLeftButton, Source={x:Reference appFrame}}"
+                            Source="{Binding NavLeftButtonIcon, Source={x:Reference appFrame}}"
+                            VerticalOptions="Center"
+                            WidthRequest="40" />
+                        <ContentView.Triggers>
+                            <DataTrigger
+                                Binding="{Binding DisplayNavLeftButton, Source={x:Reference appFrame}}"
+                                TargetType="ContentView"
+                                Value="False">
+                                <Setter Property="Content" Value="{x:Null}" />
+                            </DataTrigger>
+                        </ContentView.Triggers>
+                    </ContentView>
+                    <ContentView HorizontalOptions="CenterAndExpand">
+                        <ContentView.Content>
+                            <Label
+                                FontFamily="{StaticResource Medium}"
+                                FontSize="{StaticResource InputLabelSize}"
+                                HorizontalOptions="CenterAndExpand"
+                                Style="{StaticResource HomeLabel}"
+                                Text="{Binding PageTitle, Source={x:Reference appFrame}}"
+                                TextColor="Black"
+                                VerticalOptions="Center" />
+                        </ContentView.Content>
+                        <ContentView.Triggers>
+                            <DataTrigger
+                                Binding="{Binding DisplayLogo, Source={x:Reference appFrame}}"
+                                TargetType="ContentView"
+                                Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Image
+                                            xct:IconTintColorEffect.TintColor="Black"
+                                            Aspect="AspectFit"
+                                            HeightRequest="40"
+                                            HorizontalOptions="CenterAndExpand"
+                                            IsVisible="{Binding DisplayLogo, Source={x:Reference appFrame}}"
+                                            Source="{Binding PageTitleIcon, Source={x:Reference appFrame}}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="120" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </ContentView.Triggers>
+                    </ContentView>
+
+                    <ContentView HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                        <ImageButton
+                            Aspect="AspectFit"
+                            BackgroundColor="Transparent"
+                            Command="{Binding RightButtonCommand, Source={x:Reference appFrame}}"
+                            HeightRequest="24"
+                            HorizontalOptions="End"
+                            IsVisible="{Binding DisplayNavRightButton, Source={x:Reference appFrame}}"
+                            Source="{Binding NavRightButtonIcon, Source={x:Reference appFrame}}"
+                            VerticalOptions="Center"
+                            WidthRequest="40" />
+                        <ContentView.Triggers>
+                            <DataTrigger
+                                Binding="{Binding DisplayNavRightButton, Source={x:Reference appFrame}}"
+                                TargetType="ContentView"
+                                Value="False">
+                                <Setter Property="Content" Value="{x:Null}" />
+                            </DataTrigger>
+                        </ContentView.Triggers>
+                    </ContentView>
+                </StackLayout>
+                <BoxView
+                    BackgroundColor="Black"
+                    HeightRequest="0.5"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="{Binding DisplayLogo, Source={x:Reference appFrame}}"
+                    Opacity="0.2"
+                    VerticalOptions="End" />
+            </Grid>
+            <Grid
+                xct:SafeAreaEffect.SafeArea="True"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="SizeProportional"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="{Binding DisplaySearch, Source={x:Reference appFrame}}"
+                RowDefinitions="{OnPlatform Android='60, *',
+                                            Default='48,*'}"
+                RowSpacing="2"
+                VerticalOptions="FillAndExpand">
+                <Frame
+                    Grid.RowSpan="2"
+                    BackgroundColor="Black"
+                    Opacity="0.2">
+                    <Frame.Effects>
+                        <xct:TouchEffect Completed="HideSearch_Tapped" />
+                    </Frame.Effects>
+                </Frame>
+                <Frame
+                    Margin="4"
+                    Padding="4"
+                    xct:ShadowEffect.Color="Black"
+                    xct:ShadowEffect.Radius="4"
+                    BackgroundColor="Gray"
+                    CornerRadius="8"
+                    HeightRequest="40"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="StartAndExpand">
+                    <StackLayout
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        VerticalOptions="FillAndExpand">
+                        <StackLayout
+                            Margin="4,0,0,0"
+                            HorizontalOptions="FillAndExpand"
+                            Opacity="1"
+                            Orientation="Horizontal"
+                            VerticalOptions="Center">
+                            <StackLayout.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding DisplaySearchBar, Source={x:Reference appFrame}}"
+                                    TargetType="StackLayout"
+                                    Value="{x:Static x:Boolean.FalseString}">
+                                    <Setter Property="Opacity" Value="0" />
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+
+                            <Image HorizontalOptions="Start" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FileImageSource File="{StaticResource search_icon}" />
+                                </Image.Source>
+                            </Image>
+                            <c:Entry
+                                x:Name="searchEntry"
+                                ClearButtonVisibility="WhileEditing"
+                                HeightRequest="30"
+                                HorizontalOptions="FillAndExpand"
+                                IsSpellCheckEnabled="False"
+                                Keyboard="Text"
+                                Placeholder="Search ..."
+                                Text="{Binding SearchTerm, Source={x:Reference appFrame}}"
+                                VerticalOptions="Center" />
+                        </StackLayout>
+                        <Frame
+                            Margin="2"
+                            Padding="2"
+                            xct:TouchEffect.NativeAnimation="True"
+                            CornerRadius="4"
+                            HasShadow="False"
+                            HorizontalOptions="End"
+                            WidthRequest="50">
+                            <Label
+                                HorizontalOptions="Center"
+                                Text="Done"
+                                VerticalOptions="Center" />
+
+                            <Frame.Effects>
+                                <xct:TouchEffect Completed="HideSearch_Tapped" />
+                            </Frame.Effects>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+                <CollectionView
+                    x:Name="searchSuggestions"
+                    Grid.Row="1"
+                    BackgroundColor="Transparent"
+                    HeightRequest="0"
+                    ItemTemplate="{Binding SearchItemTemplate, Source={x:Reference appFrame}}"
+                    ItemsSource="{Binding SearchItemsSource, Source={x:Reference appFrame}}"
+                    SelectedItem="{Binding SearchSelectedItem, Source={x:Reference appFrame}}"
+                    SelectionMode="Single"
+                    VerticalOptions="StartAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="4" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                </CollectionView>
+            </Grid>
+            <Grid
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="SizeProportional"
+                BackgroundColor="{StaticResource GreyColor}"
+                IsVisible="{Binding IsBusy}"
+                Opacity="0.7">
+                <ActivityIndicator
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="100" />
+            </Grid>
+            <!--<Grid
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="SizeProportional"
+                BackgroundColor="Transparent"
+                IsVisible="{Binding IsBusy}">
+                <ActivityIndicator
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    IsEnabled="{Binding IsBusy}"
+                    IsRunning="{Binding IsBusy}"
+                    IsVisible="{Binding IsBusy}"
+                    VerticalOptions="Center"
+                    WidthRequest="100"
+                    Color="{StaticResource DarkGreyColor}" />
+            </Grid>-->
+        </AbsoluteLayout>
+    </ContentView.Content>
+</ContentView>
+

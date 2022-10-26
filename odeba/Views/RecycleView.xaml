@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    mc:Ignorable="d"
+    xmlns:fa="clr-namespace:odeba.Resources.Helpers"
+    xmlns:controls="clr-namespace:odeba.Controls"
+    xmlns:vm="clr-namespace:odeba.ViewModels"
+    x:DataType="vm:RecycleViewModel"
+    xmlns:sh="http://sharpnado.com"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    x:Class="odeba.Views.RecycleView">
+    <ContentView.Resources>
+         <xct:InvertedBoolConverter x:Key="Invert" />
+        <xct:IsNotNullOrEmptyConverter x:Key="IsNotNullOrEmpty"/>
+         <FontImageSource x:Key="PhoneIcon" FontFamily="fas" Glyph="{Static fa:FAI.Mobile}"
+                          Size="30"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+        <FontImageSource x:Key="SMSIcon" FontFamily="fas" Glyph="{Static fa:FAI.Sms}"
+                          Size="30"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+          <FontImageSource x:Key="CloseIcon" FontFamily="fas" Glyph="{Static fa:FAI.WindowClose}"
+                          Size="30"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+         <FontImageSource x:Key="ExpandClosed" FontFamily="fas" Glyph="{Static fa:FAI.ChevronRight}"
+                          Size="24"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+         <FontImageSource x:Key="ExpandOpen" FontFamily="fas" Glyph="{Static fa:FAI.ChevronDown}"
+                          Size="24"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+         <FontImageSource x:Key="ScanIcon" FontFamily="fas" Glyph="{Static fa:FAI.Qrcode}"
+                          Size="24"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+
+    </ContentView.Resources>
+    <ContentView.Content>
+        <ScrollView>
+          <Grid RowDefinitions="*, 2*"
+                 RowSpacing="20"
+                 Margin="20,30,20,10"
+                 VerticalOptions="FillAndExpand">
+            <StackLayout Orientation="Vertical">
+               
+                <Label TextTransform="Uppercase"
+                       FontSize="{StaticResource TextExtraLarge}"
+                       FontFamily="Bold"
+                       HorizontalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding Step}"
+                                     Value="0"
+                                     TargetType="Label">
+                            <Setter Property="Text" Value="YOUR VALID PHONE NUMBER"/>
+                        </DataTrigger>
+                         <DataTrigger Binding="{Binding Step}"
+                                     Value="1"
+                                     TargetType="Label">
+                            <Setter Property="Text" Value="YOUR SMS CODE"/>
+                        </DataTrigger>
+                         <DataTrigger Binding="{Binding Step}"
+                                     Value="2"
+                                     TargetType="Label">
+                            <Setter Property="Text" Value="Complete process"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+
+                </Label>
+                 <BoxView Style="{StaticResource BorderBottomStyle}"
+                         VerticalOptions="Center"
+                         HorizontalOptions="FillAndExpand"
+                         HeightRequest="8">
+                    <BoxView.Triggers>
+                        <DataTrigger Binding="{Binding Step}"
+                                     Value="0"
+                                     TargetType="BoxView">
+                            <Setter Property="Color" Value="{StaticResource DarkGreyColor}"/>
+                        </DataTrigger>
+                         <DataTrigger Binding="{Binding Step}"
+                                      Value="1"
+                                      TargetType="BoxView">
+                            <Setter Property="Color" Value="{StaticResource PrimaryBlueColor}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Step}"
+                                      Value="2"
+                                      TargetType="BoxView">
+                            <Setter Property="Color" Value="{StaticResource PrimaryGreenColor}"/>
+                        </DataTrigger>
+                    </BoxView.Triggers>
+                </BoxView>
+            </StackLayout>
+            <xct:TabView  Grid.Row="1"
+                          Margin="0,0,0,90"
+                          ControlTemplate="{Binding }"
+                          HorizontalOptions="FillAndExpand"
+                          IsSwipeEnabled="False"
+                          IsTabStripVisible="False"
+                          SelectedIndex="{Binding Step, Mode=TwoWay}"
+                          TabStripHeight="50"
+                          TabStripPlacement="Bottom"
+                          VerticalOptions="StartAndExpand">
+                <xct:TabViewItem HorizontalOptions="StartAndExpand"
+                                TabWidth="170"
+                                Text="PHONE NUMBER"
+                                TextColor="{StaticResource DarkGreyColor}"
+                                TextColorSelected="{StaticResource DarkGreyColor}">
+                    <xct:TabViewItem.Content>
+                        <Grid RowDefinitions="*, 70">
+                            <StackLayout HorizontalOptions="FillAndExpand"
+                                         VerticalOptions="Center">
+                                <StackLayout Orientation="Vertical"
+                                             HorizontalOptions="FillAndExpand"
+                                             Spacing="5">
+                                      <Label
+                                            FontFamily="{StaticResource Regular}"
+                                            FontSize="{StaticResource TextExtraSmallSize}"
+                                            IsVisible="{Binding PhoneNumber, Converter={StaticResource IsNotNullOrEmpty}}"
+                                            Text="Phone Number" />
+                                    <StackLayout Orientation="Horizontal"
+                                                 HorizontalOptions="FillAndExpand"
+                                                 VerticalOptions="FillAndExpand"
+                                                 Spacing="5">
+
+                                        <Image Source="{StaticResource PhoneIcon}"/>
+                                        <controls:Entry Text="{Binding PhoneNumber}"
+                                                        x:Name="phoneEntry"
+                                                        HeightRequest="45"
+                                                        Keyboard="Telephone"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        Placeholder="50 000 0000">
+                                            <controls:Entry.Behaviors>
+                                                <xct:MaskedBehavior Mask="XX XXX XXXX"
+                                                                    UnMaskedCharacter="X"/>
+                                            </controls:Entry.Behaviors>
+                                        </controls:Entry>
+                                    </StackLayout>
+                                    <BoxView Style="{StaticResource BorderBottomStyle}"
+                                             HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="Center">
+                                            <BoxView.Triggers>
+                                                         <DataTrigger Binding="{Binding CanContinue}"
+                                                                     TargetType="BoxView"
+                                                                     Value="{x:Static x:Boolean.FalseString}">
+                                                                     <Setter Property="Color" Value="Red" />
+                                                                     <Setter Property="Opacity" Value="0.8" />
+                                                         </DataTrigger>
+                                                         <DataTrigger Binding="{Binding CanContinue}"
+                                                                     TargetType="BoxView"
+                                                                     Value="{x:Static x:Boolean.TrueString}">
+                                                                     <Setter Property="Color" Value="Green" />
+                                                                     <Setter Property="Opacity" Value="0.8" />
+                                                         </DataTrigger>
+                                            </BoxView.Triggers>
+                                    </BoxView>
+                                    
+                                </StackLayout>
+                            </StackLayout>
+                             <Button Text="Send Code"
+                                         Grid.Row="1"
+                                         IsEnabled="{Binding CanContinue}"
+                                         x:Name="sendCode"
+                                         Style="{StaticResource LoginButtonStyle}"
+                                         HeightRequest="35"
+                                         WidthRequest="150"
+                                         Command="{Binding Nextcommand}"
+                                         BackgroundColor="Transparent"
+                                         BorderWidth="2"
+                                         VerticalOptions="Start"
+                                         BorderColor="{StaticResource PrimaryBlueColor}"
+                                         TextColor="{StaticResource PrimaryBlueColor}"
+                                         HorizontalOptions="End"/>
+                        </Grid>
+                    </xct:TabViewItem.Content>
+                     <xct:TabViewItem.Triggers>
+                            <DataTrigger
+                                Binding="{Binding Step}"
+                                TargetType="xct:TabViewItem"
+                                Value="0">
+                                <Setter Property="TextColor" Value="{StaticResource DarkGreyColor}" />
+                            </DataTrigger>
+                        </xct:TabViewItem.Triggers>
+                </xct:TabViewItem>
+                <xct:TabViewItem Text="VERIFY CODE"
+                                 HorizontalOptions="CenterAndExpand"
+                                TabWidth="170"
+                                TextColor="{StaticResource DarkGreyColor}"
+                                TextColorSelected="{StaticResource DarkGreyColor}">
+                    <xct:TabViewItem.Content>
+                        <Grid RowDefinitions="*, 70">
+                            <StackLayout HorizontalOptions="FillAndExpand"
+                                         VerticalOptions="Center">
+
+                                 <StackLayout Orientation="Vertical"
+                                              Spacing="5">
+                                    <Label
+                                            FontFamily="{StaticResource Regular}"
+                                            FontSize="{StaticResource TextExtraSmallSize}"
+                                            IsVisible="{Binding Code, Converter={StaticResource IsNotNullOrEmpty}}"
+                                            Text="SMS Code" />
+                                    <StackLayout Orientation="Horizontal"
+                                                 Spacing="5"
+                                                 VerticalOptions="FillAndExpand"
+                                                 HorizontalOptions="FillAndExpand">
+                                        <Image Source="{StaticResource SMSIcon}"/>
+                                        <controls:Entry Placeholder="101 202"
+                                                HeightRequest="45"
+                                                Keyboard="Numeric"
+                                                HorizontalOptions="FillAndExpand"
+                                                Text="{Binding Code}">
+                                            <controls:Entry.Behaviors>
+                                                <xct:MaskedBehavior Mask="XXX XXX" />
+                                            </controls:Entry.Behaviors>
+
+                                        </controls:Entry>
+                                    </StackLayout>
+                        
+                                    <BoxView Style="{StaticResource BorderBottomStyle}"
+                                             HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="Center">
+                                        <BoxView.Triggers>
+                                                         <DataTrigger Binding="{Binding CanContinue}"
+                                                                     TargetType="BoxView"
+                                                                     Value="{x:Static x:Boolean.FalseString}">
+                                                                     <Setter Property="Color" Value="Red" />
+                                                                     <Setter Property="Opacity" Value="0.8" />
+                                                         </DataTrigger>
+                                                         <DataTrigger Binding="{Binding CanContinue}"
+                                                                     TargetType="BoxView"
+                                                                     Value="{x:Static x:Boolean.TrueString}">
+                                                                     <Setter Property="Color" Value="Green" />
+                                                                     <Setter Property="Opacity" Value="0.8" />
+                                                         </DataTrigger>
+                                            </BoxView.Triggers>
+                                    </BoxView>
+                                 </StackLayout>
+                            </StackLayout>
+                             <FlexLayout JustifyContent="SpaceBetween"
+                                         AlignItems="Start"
+                                         Direction="Row"
+                                         Wrap="NoWrap"
+                                         AlignContent="SpaceEvenly"
+                                         HorizontalOptions="FillAndExpand"
+                                         Margin="10,0"
+                                         Grid.Row="1">
+                                <Button Text="Back"
+                                         Style="{StaticResource LoginButtonStyle}"
+                                         HeightRequest="35"
+                                         Command="{Binding BackCommmand}"
+                                         BackgroundColor="Transparent"
+                                         BorderWidth="2"
+                                         WidthRequest="90"
+                                         BorderColor="{StaticResource PrimaryBlueColor}"
+                                         TextColor="{StaticResource PrimaryBlueColor}"
+                                         HorizontalOptions="StartAndExpand"/>
+                                 <Button Text="Continue"
+                                         Style="{StaticResource LoginButtonStyle}"
+                                         HeightRequest="35"
+                                         WidthRequest="90"
+                                         IsEnabled="{Binding CanContinue}"
+                                         Command="{Binding ContinueCommand}"
+                                         BackgroundColor="Transparent"
+                                         BorderWidth="2"
+                                         BorderColor="{StaticResource PrimaryBlueColor}"
+                                         TextColor="{StaticResource PrimaryBlueColor}"
+                                         HorizontalOptions="EndAndExpand"/>
+                            </FlexLayout>
+                        </Grid>
+                    </xct:TabViewItem.Content>
+                    <xct:TabViewItem.Triggers>
+                            <DataTrigger
+                                Binding="{Binding Step}"
+                                TargetType="xct:TabViewItem"
+                                Value="1">
+                                <Setter Property="TextColor" Value="{StaticResource PrimaryBlueColor}" />
+                            </DataTrigger>
+                    </xct:TabViewItem.Triggers>
+                </xct:TabViewItem>
+                <xct:TabViewItem Text="COMPLETE PROCESS"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="StartAndExpand"
+                                 TabWidth="170"
+                                 TextColor="{StaticResource DarkGreyColor}"
+                                 TextColorSelected="{StaticResource DarkGreyColor}">
+                    <xct:TabViewItem.Content>
+                        <Grid RowDefinitions="Auto, 50, 50, 50, 50"
+                              ColumnSpacing="20"
+                              Margin="10"
+                              VerticalOptions="CenterAndExpand"
+                              RowSpacing="20">
+                                <StackLayout HorizontalOptions="FillAndExpand"
+                                             Spacing="20">
+                                    <StackLayout Orientation="Vertical"
+                                                 Spacing="5">
+                                        <Label
+                                            FontFamily="{StaticResource Regular}"
+                                            FontSize="{StaticResource TextExtraSmallSize}"
+                                            IsVisible="{Binding SelectedMachineUID, Converter={StaticResource IsNotNullOrEmpty}}"
+                                            Text="MachineUID"/>
+                                        <StackLayout Orientation="Horizontal"
+                                                VerticalOptions="StartAndExpand"
+                                                Spacing="10"
+                                                HorizontalOptions="FillAndExpand">
+                                        <Picker Title="Machine UID"
+                                                SelectedItem="{Binding SelectedMachineUID, Mode=TwoWay}"
+                                                ItemsSource="{Binding MachineUIDs}"
+                                                HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="CenterAndExpand"/>
+                                        <Image Grid.Column="1"
+                                               VerticalOptions="CenterAndExpand"
+                                               HorizontalOptions="End"
+                                               Source="{StaticResource ScanIcon}"/>
+                                   </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Vertical"
+                                                 Spacing="5">
+                                         <Label
+                                            FontFamily="{StaticResource Regular}"
+                                            FontSize="{StaticResource TextExtraSmallSize}"
+                                            IsVisible="{Binding SelcetedCategory, Converter={StaticResource IsNotNullOrEmpty}}"
+                                            Text="Category" />
+                                      <StackLayout Orientation="Horizontal"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   Spacing="10"
+                                                   VerticalOptions="FillAndExpand">
+                                              <Picker Title="Category"
+                                                SelectedItem="{Binding SelcetedCategory, Mode=TwoWay}"
+                                                ItemsSource="{Binding Categories}"
+                                                HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="CenterAndExpand"/>
+
+                                        </StackLayout>
+
+                                    </StackLayout>
+                                </StackLayout>
+                        </Grid>
+                    </xct:TabViewItem.Content>
+                    <xct:TabViewItem.Triggers>
+                            <DataTrigger
+                                Binding="{Binding Step}"
+                                TargetType="xct:TabViewItem"
+                                Value="2">
+                                <Setter Property="TextColor" Value="{StaticResource PrimaryBlueColor}" />
+                            </DataTrigger>
+                    </xct:TabViewItem.Triggers>
+                </xct:TabViewItem>
+            </xct:TabView>
+        </Grid>
+
+        </ScrollView>
+    </ContentView.Content>
+</ContentView>
+

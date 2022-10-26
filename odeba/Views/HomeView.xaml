@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:odeba.ViewModels"
+    xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+    xmlns:pancakeview="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+    x:DataType="vm:HomeViewModel"
+    x:Class="odeba.Views.HomeView">
+    <ContentView.Content>
+       <Grid RowDefinitions="*,Auto">
+             <maps:Map MapType="Street" Grid.RowSpan="2"
+                       x:Name="odebaMap"
+                       IsShowingUser="True"
+                       HasZoomEnabled="True"
+                       HasScrollEnabled="True"/>
+            
+           <Frame HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand"
+                  IsClippedToBounds="True"
+                  Grid.Row="1"
+                  HeightRequest="250">
+                <StackLayout Orientation="Vertical"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand"
+                             Spacing="20">
+                    <BoxView Style="{StaticResource BorderBottomStyle}"
+                             HeightRequest="5"
+                             WidthRequest="50"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Start"
+                             Color="{StaticResource DarkGreyColor}"/>
+                    <TableView Intent="Data">
+                        <TableRoot>
+                            <TableSection Title="Rescent Activities">
+                                <SwitchCell Text="Recycled item">
+
+
+                                </SwitchCell>
+                            </TableSection>
+                        </TableRoot>
+
+                    </TableView>
+
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
+

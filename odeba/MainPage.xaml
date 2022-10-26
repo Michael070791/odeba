@@ -1,25 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="odeba.MainPage">
+             x:Class="odeba.MainPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+              xmlns:tabs="clr-namespace:Sharpnado.Presentation.Forms.CustomViews.Tabs;assembly=Sharpnado.Presentation.Forms"
+              xmlns:fa="clr-namespace:odeba.Resources.Helpers"
+              xmlns:sh="clr-namespace:Sharpnado.Shades;assembly=Sharpnado.Shadows"
+              xmlns:sv="clr-namespace:Sharpnado.Presentation.Forms.CustomViews;assembly=Sharpnado.Presentation.Forms"
+              xmlns:vm="clr-namespace:odeba.ViewModels"
+              xmlns:pages="clr-namespace:odeba.Pages"
+              xmlns:views="clr-namespace:odeba.Views"
+              x:DataType="vm:MainViewModel"
+              NavigationPage.HasNavigationBar="False">
 
-    <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-        </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>
-    </StackLayout>
+      <ContentPage.Resources>
+        <xct:InvertedBoolConverter x:Key="invert"/>
+         <FontImageSource x:Key="HomeIcon" FontFamily="fas" Glyph="&#xf015;" Color="Accent" />
+        <FontImageSource x:Key="SearchFontIcon" FontFamily="fas" Glyph="&#xf002;"  Color="Accent"/>
+        <FontImageSource x:Key="BellFontIcon" FontFamily="fas" Glyph="&#xf0f3;"  Color="Accent"/>
+        <FontImageSource x:Key="FavoriteFontIcon" FontFamily="fas" Glyph="&#xf02e;"  Color="Accent"/>
+        <FontImageSource x:Key="HistorIcon" FontFamily="fas" Glyph="{Static fa:FAI.History}" Size="24"/>
+        <FontImageSource x:Key="ProfileFontIcon" FontFamily="fas" Glyph="&#xf2bd;"/>
+        <FontImageSource x:Key="RecycleIcon" FontFamily="fas" Glyph="{Static fa:FAI.Recycle}" Size="24" />
+        <FontImageSource x:Key="Login" FontFamily="fas" Glyph="{Static fa:FAI.DoorOpen}" Size="24" />
+        <FontImageSource x:Key="Logout" FontFamily="fas" Glyph="{Static fa:FAI.DoorClosed}" Size="24" />
+        <Style x:Key="TabStyle" TargetType="tabs:BottomTabItem">
+            <Setter Property="SelectedTabColor" Value="{StaticResource PrimaryBlueColor}" />
+            <Setter Property="LabelSize" Value="14" />
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="UnselectedIconColor" Value="DarkGray"/>
+            <Setter Property="UnselectedLabelColor" Value="DarkGray" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="*, Auto">
+        <tabs:ViewSwitcher x:Name="Switcher" Animate="True" SelectedIndex="{Binding SelectedViewIndex}">
+                <sv:LazyView Animate="True" x:TypeArguments="views:HomeView" BindingContext="{Binding HomeVM}"/>
+                <sv:LazyView Animate="True" x:TypeArguments="views:RecycleView" BindingContext="{Binding RecycleVM}"/>
+            </tabs:ViewSwitcher>
+        <tabs:TabHostView x:Name="TabHost"  
+                    Grid.Row="1"
+                    BackgroundColor="{StaticResource LightGreyColor}"
+                    SelectedIndex="{Binding Source={x:Reference Switcher}, Path=SelectedIndex, Mode=TwoWay}"
+                    Shades="{sh:SingleShade Offset='0,-1', Opacity=0.5,Color=Accent,BlurRadius=10}"
+                    TabType="Fixed">
+                <tabs:TabHostView.Tabs>
+                    <tabs:BottomTabItem
+                            Style="{StaticResource TabStyle}"
+                            IconImageSource="{StaticResource HomeIcon}"
+                            Label="Home"/>
 
+                    <!--  Circle button  -->
+                    
+                    <tabs:TabButton ButtonBackgroundColor="Accent"          
+                        ButtonCircleSize="50"
+                        xct:ShadowEffect.Color="{StaticResource PrimaryBlueColor}"
+                        xct:ShadowEffect.OffsetX="-2"
+                        xct:ShadowEffect.OffsetY="3"
+                        xct:ShadowEffect.Opacity="0.6"
+                        ButtonPadding="10"
+                        IconImageSource="{StaticResource Login}"
+                        Scale="1.3"
+                        TranslationY="-20">
+                    <tabs:TabButton.Behaviors>
+                        <xct:AnimationBehavior>
+                            <xct:AnimationBehavior.AnimationType>
+                                <xct:RotateAnimation Rotation="360"
+                                                    Easing="{x:Static Easing.BounceIn}"
+                                                    Duration="1000"/>
+                            </xct:AnimationBehavior.AnimationType>
+                        </xct:AnimationBehavior>
+
+                    </tabs:TabButton.Behaviors>
+                </tabs:TabButton>
+                    <tabs:BottomTabItem
+                            Style="{StaticResource TabStyle}"
+                            IconImageSource="{StaticResource RecycleIcon}"
+                            Label="Recycle"/>
+
+                </tabs:TabHostView.Tabs>
+            </tabs:TabHostView>
+    </Grid>
 </ContentPage>
 

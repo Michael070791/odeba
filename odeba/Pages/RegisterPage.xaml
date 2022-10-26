@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:fa="clr-namespace:odeba.Resources.Helpers"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+    xmlns:sh="http://sharpnado.com"
+    xmlns:controls="clr-namespace:odeba.Controls"
+    mc:Ignorable="d"
+    xmlns:vm="clr-namespace:odeba.ViewModels"
+    x:DataType="vm:RegisterViewModel"
+    x:Class="odeba.Pages.RegisterPage">
+    <ContentPage.Resources>
+        <FontImageSource x:Key="PhoneIcon" FontFamily="fas" Glyph="{Static fa:FAI.Mobile}"
+                          Size="30"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+        <FontImageSource x:Key="SMSIcon" FontFamily="fas" Glyph="{Static fa:FAI.Sms}"
+                          Size="30"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+        <FontImageSource x:Key="CloseIcon" FontFamily="fas" Glyph="{Static fa:FAI.WindowClose}"
+                          Size="30"
+                          Color="{StaticResource PrimaryBlueColor}"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid   RowDefinitions="{OnPlatform Android='*,Auto,*',
+                                        Default='*, Auto, *'}"
+              xct:SafeAreaEffect.SafeArea="True"
+              RowSpacing="10"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand"
+              Margin="20,30">
+            <StackLayout HorizontalOptions="FillAndExpand"
+                         Margin="0,20">
+                <Image Source="{StaticResource CloseIcon}"
+                       HorizontalOptions="End"
+                       VerticalOptions="Start">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CloseCommand}" CommandParameter="{Binding }" NumberOfTapsRequired="1"/>
+
+                    </Image.GestureRecognizers>
+                </Image>
+                 <StackLayout HorizontalOptions="FillAndExpand"
+                             Orientation="Horizontal">
+                    <BoxView Style="{StaticResource BorderBottomStyle}"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center"/>
+                    <Label Text="Register"
+                           FontFamily="Bold"
+                           HorizontalOptions="Center"
+                           FontSize="{StaticResource TextExtraXLarge}"/>
+                     <BoxView Style="{StaticResource BorderBottomStyle}"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center"/>
+
+                </StackLayout>
+            </StackLayout>
+            <StackLayout HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand"
+                         Orientation="Vertical"
+                         Spacing="20"
+                         Grid.Row="1">
+                 <StackLayout Orientation="Vertical"
+                                 HorizontalOptions="FillAndExpand"
+                                 Spacing="5">
+                        <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="FillAndExpand"
+                                     VerticalOptions="FillAndExpand"
+                                     Spacing="5">
+
+                            <Image Source="{StaticResource PhoneIcon}"/>
+                            <controls:Entry Text="{Binding PhoneNumber.Value}"
+                                            HeightRequest="45"
+                                            HorizontalOptions="FillAndExpand"
+                                            Placeholder="50 000 0000">
+                                <controls:Entry.Behaviors>
+                                    <xct:MaskedBehavior Mask="XX XXX XXXX" />
+                                    <xct:RequiredStringValidationBehavior IsValid="{Binding PhoneNumber.IsValid}" />
+                                     <xct:NumericValidationBehavior Flags="ValidateOnUnfocusing"
+                                                                    IsValid="{Binding PhoneNumber.IsValid}">
+
+                                     </xct:NumericValidationBehavior>
+                                </controls:Entry.Behaviors>
+                            </controls:Entry>
+                        </StackLayout>
+                        
+                        <BoxView Style="{StaticResource BorderBottomStyle}"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Center">
+                            <BoxView.Triggers>
+                                <DataTrigger Binding="{Binding PhoneNumber.IsValid}"
+                                             TargetType="BoxView"
+                                             Value="{Binding PhoneNumber.Errors}">
+                                             <Setter Property="BackgroundColor" Value="Red" />
+                                             <Setter Property="Opacity" Value="1" />
+                                             </DataTrigger>
+                                </BoxView.Triggers>
+                        </BoxView>
+                    </StackLayout>
+                <Button Text="Send Code"
+                            Style="{StaticResource LoginButtonStyle}"
+                            WidthRequest="150"
+                            HeightRequest="45"
+                            Command="{Binding SendSmsCommand}"
+                            BackgroundColor="Transparent"
+                            BorderWidth="2"
+                            BorderColor="{StaticResource PrimaryBlueColor}"
+                            TextColor="{StaticResource PrimaryBlueColor}"
+                            HorizontalOptions="End"/>
+                  <StackLayout Orientation="Vertical"
+                                 Spacing="5">
+                        <StackLayout Orientation="Horizontal"
+                                     Spacing="5"
+                                     VerticalOptions="FillAndExpand"
+                                     HorizontalOptions="FillAndExpand">
+                            <Image Source="{StaticResource SMSIcon}"/>
+                            <controls:Entry Placeholder="101 202"
+                                    HeightRequest="45"
+                                    HorizontalOptions="FillAndExpand"
+                                    Text="{Binding Code.Value}">
+                                <controls:Entry.Behaviors>
+                                    <xct:MaskedBehavior Mask="XXX XXX" />
+                                </controls:Entry.Behaviors>
+
+                        </controls:Entry>
+                        </StackLayout>
+                        
+                        <BoxView Style="{StaticResource BorderBottomStyle}"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Center">
+                            <BoxView.Triggers>
+                                <DataTrigger Binding="{Binding Code.HasErrors}"
+                                             TargetType="BoxView"
+                                             Value="{Binding Code.HasErrors}">
+                                             <Setter Property="BackgroundColor" Value="Red" />
+                                             <Setter Property="Opacity" Value="1" />
+                                             </DataTrigger>
+                                </BoxView.Triggers>
+                        </BoxView>
+                    </StackLayout>
+                    <Button Text="Confirm"
+                            Style="{StaticResource LoginButtonStyle}"
+                            HeightRequest="45"
+                            Command="{Binding RegisterCommand}"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="{StaticResource PrimaryBlueColor}"
+                            BorderWidth="2"
+                            BorderColor="{StaticResource WhiteColor}"
+                            TextColor="{StaticResource WhiteColor}"/>
+            </StackLayout>
+            <StackLayout Orientation="Vertical"
+                           Spacing="10"
+                           Grid.Row="2"
+                           Margin="30,10"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="EndAndExpand">
+                      <StackLayout HorizontalOptions="FillAndExpand"
+                             Orientation="Horizontal">
+                        <BoxView Style="{StaticResource BorderBottomStyle}"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Center"/>
+                            <Label Text="Have and account ?"
+                                   FontFamily="Bold"
+                                   HorizontalOptions="Center"
+                                   FontSize="{StaticResource TextExtraXLarge}"/>
+                        <BoxView Style="{StaticResource BorderBottomStyle}"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center"/>
+
+                      </StackLayout>
+                     <Label Text="Login now"
+                                   FontFamily="Bold"
+                                   TextDecorations="Underline"
+                                   TextColor="{StaticResource PrimaryBlueColor}"
+                                   HorizontalOptions="End"
+                                   FontSize="{StaticResource TextExtraXLarge}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseCommand}" CommandParameter="{Binding }" NumberOfTapsRequired="1"/>
+
+                        </Label.GestureRecognizers>
+
+                    </Label>
+
+              </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+

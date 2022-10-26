@@ -1,4 +1,4 @@
-namespace UrGuide.Mobile.Helpers
+namespace odeba.Resources.Helpers
 {
     /// <summary>
     /// The unicode values for all FontAwesome icons.

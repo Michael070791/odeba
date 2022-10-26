@@ -13,6 +13,8 @@ namespace odeba
         public MainPage()
         {
             InitializeComponent();
+
+            BindingContext = Startup.GetService<ViewModels.MainViewModel>();
         }
     }
 }
