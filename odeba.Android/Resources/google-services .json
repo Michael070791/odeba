@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "302474268457",
+    "firebase_url": "https://odeba-db517-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "odeba-db517",
+    "storage_bucket": "odeba-db517.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302474268457:android:f531f7f4e5cf306449b138",
+        "android_client_info": {
+          "package_name": "com.odeba.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302474268457-cncvsvcibdd4alotu1d84bmhttm9nh0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG12EN70nCMSS4RskqObq3N1_kFEr39lU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302474268457-cncvsvcibdd4alotu1d84bmhttm9nh0f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "302474268457-74rlmsst8afldos3rhk744l68da3pa3g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.odeba.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
